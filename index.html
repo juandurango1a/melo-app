@@ -1,75 +1,722 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MELOAPP</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MELOAPP – On‑Demand Home Cleaning</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    :root {
+      --emerald: #10B981;
+      --emerald-dark: #059669;
+      --light-gray: #f4f4f4;
+      --dark-gray: #333;
+      --accent: #FBBF24;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--dark-gray);
+      line-height: 1.6;
+    }
+
+    section { padding: 4rem 1rem; }
+
+    .hero {
+      background: var(--emerald);
+      color: #fff;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      max-width: 600px;
+    }
+
+    .btn {
+      background: #fff;
+      color: var(--emerald);
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+
+    .decorations {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0%, 100% { --float: 0px; }
+      50% { --float: -10px; }
+    }
+
+    .decorations .icon {
+      position: absolute;
+      pointer-events: auto;
+      transform-origin: center;
+      transition: transform 0.3s;
+      --rotation: 0deg;
+      --float: 0px;
+      animation: float 4s ease-in-out infinite;
+      transform: translateY(var(--float)) rotate(var(--rotation));
+    }
+
+    .decorations .icon:hover {
+      transform: translateY(var(--float)) rotate(calc(var(--rotation) + 15deg)) scale(1.1);
+    }
+
+    /* Pastel colors for rotating text */
+    .pastel1 { color: #FFB3BA; }
+    .pastel2 { color: #FFDFBA; }
+    .pastel3 { color: #FFFFBA; }
+    .pastel4 { color: #BAFFC9; }
+    .pastel5 { color: #BAE1FF; }
+    .pastel6 { color: #E2F0CB; }
+    .pastel7 { color: #F1CBFF; }
+
+    /* Cleaning icons */
+    .vacuum {
+      width: 60px;
+      height: 100px;
+      background: #a78bfa;
+      border-radius: 30px 30px 10px 10px;
+      left: 8%;
+      bottom: 20%;
+    }
+    .vacuum::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      left: 22px;
+      width: 16px;
+      height: 40px;
+      background: #6d28d9;
+      border-radius: 8px;
+    }
+    .vacuum::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 10px;
+      width: 40px;
+      height: 20px;
+      background: #4c1d95;
+      border-radius: 10px;
+    }
+
+    .broom {
+      width: 12px;
+      height: 120px;
+      background: #b45309;
+      right: 8%;
+      bottom: 10%;
+    }
+    .broom::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      left: -18px;
+      width: 48px;
+      height: 40px;
+      background: var(--accent);
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      box-shadow: 0 5px 0 #d97706;
+    }
+
+    .spray {
+      width: 60px;
+      height: 100px;
+      background: #60a5fa;
+      right: 12%;
+      top: 10%;
+      border-radius: 5px;
+    }
+    .spray::before {
+      content: '';
+      position: absolute;
+      top: -25px;
+      left: 15px;
+      width: 30px;
+      height: 25px;
+      background: #3b82f6;
+      border-radius: 3px 3px 0 0;
+    }
+    .spray::after {
+      content: '';
+      position: absolute;
+      top: -33px;
+      left: 25px;
+      width: 10px;
+      height: 8px;
+      background: #1e40af;
+      border-radius: 2px;
+    }
+
+    .bucket {
+      width: 70px;
+      height: 60px;
+      background: #9ca3af;
+      left: 12%;
+      top: 12%;
+      border-radius: 0 0 30px 30px;
+      border-top: 5px solid #6b7280;
+    }
+    .bucket::before {
+      content: '';
+      position: absolute;
+      top: -25px;
+      left: 10px;
+      width: 50px;
+      height: 25px;
+      border: 5px solid #6b7280;
+      border-bottom: none;
+      border-radius: 25px 25px 0 0;
+    }
+    .bucket::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 60px;
+      height: 25px;
+      background: #bfdbfe;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .benefits {
+      background: var(--light-gray);
+      text-align: center;
+    }
+
+    .benefits h2 { margin-bottom: 2rem; }
+
+    .benefit-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .benefit-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      max-width: 250px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: transform .2s;
+    }
+
+    .benefit-card:hover { transform: translateY(-4px); }
+
+    .benefit-card span {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: .5rem;
+    }
+
+    .how-it-works { text-align: center; }
+    .how-it-works h2 { margin-bottom: 2rem; }
+
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .step {
+      flex: 1 1 200px;
+      background: var(--light-gray);
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .step span {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: .5rem;
+    }
+
+    .faq { background: var(--light-gray); }
+    .faq h2 { text-align: center; margin-bottom: 2rem; }
+
+    details {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 0 auto 1rem;
+      max-width: 700px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .testimonials { text-align: center; }
+    .testimonials h2 { margin-bottom: 2rem; }
+
+    .testimonials .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .testimonial {
+      background: var(--light-gray);
+      padding: 1.5rem;
+      border-radius: 8px;
+      max-width: 300px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .testimonial strong { display: block; margin-top: 1rem; }
+
+    .cta {
+      background: var(--emerald);
+      color: #fff;
+      text-align: center;
+    }
+    .cta h2 { margin-bottom: .5rem; }
+
+    .cta p { margin-bottom: 2rem; }
+
+    .simulator {
+      background: #fff;
+      color: var(--dark-gray);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .packages h3, .toppings h3 {
+      margin-bottom: .5rem;
+    }
+
+    .package-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .package-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      padding: 1rem;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.3s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .package-card:hover,
+    .package-card.selected {
+      border-color: var(--emerald);
+    }
+
+    .package-card input { display: none; }
+
+    .package-card .emoji {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .package-card .price {
+      margin-top: 0.5rem;
+      font-weight: bold;
+    }
+
+    .toppings {
+      margin-bottom: 1rem;
+    }
+
+    .topping-option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .topping-option input { margin-right: 0.5rem; }
+
+    .total {
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    #schedule-btn {
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      background: var(--emerald);
+      color: #fff;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #schedule-btn:hover { background: var(--emerald-dark); }
+
+    #message {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      color: var(--emerald);
+    }
+
+    .hidden { display: none; }
+
+    footer {
+      background: #111827;
+      color: #fff;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    footer a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 .5rem;
+    }
+
+    .social-icons {
+      margin: 1rem 0;
+    }
+
+    .social-icons span {
+      margin: 0 .5rem;
+      font-size: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.2rem; }
+      section { padding: 3rem 1rem; }
+      .vacuum { left: 2%; bottom: 15%; }
+      .broom { right: 2%; bottom: 10%; }
+      .spray { right: 5%; top: 8%; }
+      .bucket { left: 5%; top: 8%; }
+    }
+  </style>
 </head>
 <body>
-    <main class="container">
-        <h1>MELOAPP</h1>
-        <section class="packages">
-            <h2>Selecciona tu paquete</h2>
-            <div class="package-list">
-                <!-- Packages will be injected here by JS or we can define them in HTML with labels and inputs-->
-                <label class="package-card" data-price="25">
-                    <input type="radio" name="package" value="SMART" />
-                    <span class="emoji">🟠</span>
-                    <span class="name">Paquete SMART</span>
-                    <span class="price">$25</span>
-                </label>
-                <label class="package-card" data-price="35">
-                    <input type="radio" name="package" value="FRESCOS" />
-                    <span class="emoji">🟢</span>
-                    <span class="name">Esenciales Frescos</span>
-                    <span class="price">$35</span>
-                </label>
-                <label class="package-card" data-price="45">
-                    <input type="radio" name="package" value="RENACERES" />
-                    <span class="emoji">🟡</span>
-                    <span class="name">Renaceres MELO</span>
-                    <span class="price">$45</span>
-                </label>
-                <label class="package-card" data-price="40">
-                    <input type="radio" name="package" value="MIMOS" />
-                    <span class="emoji">🔵</span>
-                    <span class="name">Mimos con Patas</span>
-                    <span class="price">$40</span>
-                </label>
-                <label class="package-card" data-price="30">
-                    <input type="radio" name="package" value="CARINITOS" />
-                    <span class="emoji">🟣</span>
-                    <span class="name">Cariñitos Extra</span>
-                    <span class="price">$30</span>
-                </label>
-            </div>
-        </section>
+  <header class="hero">
+    <div class="decorations">
+      <div class="icon vacuum" data-aos="fade-right"></div>
+      <div class="icon broom" data-aos="fade-left"></div>
+      <div class="icon spray" data-aos="fade-down"></div>
+      <div class="icon bucket" data-aos="fade-up"></div>
+    </div>
+    <h1 data-aos="fade-up">
+      La forma más fácil de<br>
+      <span id="typed"></span><br>
+      con MeloApp
+    </h1>
+    <a href="#cta" class="btn" data-aos="zoom-in" data-aos-delay="400">Get Started</a>
+  </header>
 
-        <section class="toppings">
-            <h2>Agrega toppings</h2>
-            <label class="topping-option" data-price="5">
-                <input type="checkbox" name="topping" value="Aromas" />
-                Aromas Naturales (+$5)
-            </label>
-            <label class="topping-option" data-price="10">
-                <input type="checkbox" name="topping" value="Desinfeccion" />
-                Desinfección Profunda (+$10)
-            </label>
-            <label class="topping-option" data-price="8">
-                <input type="checkbox" name="topping" value="Mascotas" />
-                Cuidado de Mascotas (+$8)
-            </label>
-        </section>
+  <section class="benefits" id="benefits">
+    <h2>Why Choose MELOAPP?</h2>
+    <div class="benefit-list">
+      <div class="benefit-card">
+        <span>⚡</span>
+        <h3>Fast Booking</h3>
+        <p>Schedule your cleaning in just a few taps.</p>
+      </div>
+      <div class="benefit-card">
+        <span>🧽</span>
+        <h3>Pro Cleaners</h3>
+        <p>Experienced professionals that you can trust.</p>
+      </div>
+      <div class="benefit-card">
+        <span>🌿</span>
+        <h3>Eco‑Friendly</h3>
+        <p>Green products safe for family and pets.</p>
+      </div>
+      <div class="benefit-card">
+        <span>💸</span>
+        <h3>Transparent Prices</h3>
+        <p>No surprises – know exactly what you pay.</p>
+      </div>
+    </div>
+  </section>
 
-        <div class="total">
-            Total: <span id="total-price">$0</span>
+  <section class="how-it-works" id="how">
+    <h2>How It Works</h2>
+    <div class="steps">
+      <div class="step">
+        <span>1️⃣</span>
+        <h3>Select</h3>
+        <p>Pick the base package that fits your needs.</p>
+      </div>
+      <div class="step">
+        <span>2️⃣</span>
+        <h3>Customize</h3>
+        <p>Add extra services for a tailored clean.</p>
+      </div>
+      <div class="step">
+        <span>3️⃣</span>
+        <h3>Book</h3>
+        <p>Confirm your booking and enjoy your time.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <h2>FAQ</h2>
+    <details>
+      <summary>Can I cancel or reschedule?</summary>
+      <p>Yes, adjust your booking up to 24 hours in advance without fees.</p>
+    </details>
+    <details>
+      <summary>Are the cleaners vetted?</summary>
+      <p>All professionals pass background checks and training.</p>
+    </details>
+    <details>
+      <summary>Do I need to provide supplies?</summary>
+      <p>No, our cleaners arrive fully equipped with eco products.</p>
+    </details>
+    <details>
+      <summary>What areas do you serve?</summary>
+      <p>We currently serve major urban areas and are expanding quickly.</p>
+    </details>
+  </section>
+
+  <section class="testimonials" id="testimonials">
+    <h2>What People Say</h2>
+    <div class="cards">
+      <div class="testimonial">
+        <p>“MELOAPP made my apartment sparkle before hosting friends.”</p>
+        <strong>— Ana G.</strong>
+      </div>
+      <div class="testimonial">
+        <p>“As a busy professional, the flexibility is priceless.”</p>
+        <strong>— Carlos M.</strong>
+      </div>
+      <div class="testimonial">
+        <p>“Our clients love the service, and so do we!”</p>
+        <strong>— Maria L., Cleaner</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="cta">
+    <h2>Design your perfect cleaning service now</h2>
+    <p>Choose a package, customize add‑ons and see your price instantly.</p>
+    <div class="simulator">
+      <section class="packages">
+        <h3>Select your package</h3>
+        <div class="package-list">
+          <label class="package-card" data-price="25">
+            <input type="radio" name="package" value="SMART" />
+            <span class="emoji">🟠</span>
+            <span class="name">SMART Package</span>
+            <span class="price">$25</span>
+          </label>
+          <label class="package-card" data-price="35">
+            <input type="radio" name="package" value="FRESH" />
+            <span class="emoji">🟢</span>
+            <span class="name">Fresh Essentials</span>
+            <span class="price">$35</span>
+          </label>
+          <label class="package-card" data-price="45">
+            <input type="radio" name="package" value="RENEW" />
+            <span class="emoji">🟡</span>
+            <span class="name">MELO Renew</span>
+            <span class="price">$45</span>
+          </label>
+          <label class="package-card" data-price="40">
+            <input type="radio" name="package" value="PETS" />
+            <span class="emoji">🔵</span>
+            <span class="name">Pet Pampering</span>
+            <span class="price">$40</span>
+          </label>
+          <label class="package-card" data-price="30">
+            <input type="radio" name="package" value="EXTRA" />
+            <span class="emoji">🟣</span>
+            <span class="name">Extra Care</span>
+            <span class="price">$30</span>
+          </label>
         </div>
+      </section>
 
-        <button id="schedule-btn">Agendar mi limpieza</button>
-        <div id="message" class="hidden">¡Gracias por confiar en MELOAPP!</div>
-    </main>
+      <section class="toppings">
+        <h3>Add toppings</h3>
+        <label class="topping-option" data-price="5">
+          <input type="checkbox" name="topping" value="Scents" />
+          Natural Scents (+$5)
+        </label>
+        <label class="topping-option" data-price="10">
+          <input type="checkbox" name="topping" value="Deep" />
+          Deep Disinfection (+$10)
+        </label>
+        <label class="topping-option" data-price="8">
+          <input type="checkbox" name="topping" value="Pets" />
+          Pet Care (+$8)
+        </label>
+      </section>
 
-    <script src="script.js"></script>
+      <div class="total">
+        Total: <span id="total-price">$0</span>
+      </div>
+
+      <button id="schedule-btn">Book my cleaning</button>
+      <div id="message" class="hidden">Thanks for choosing MELOAPP!</div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Contact us: <a href="mailto:info@meloapp.com">info@meloapp.com</a> | <a href="tel:+10000000000">+1 (000) 000-0000</a></p>
+    <div class="social-icons">
+      <span>🐦</span>
+      <span>📘</span>
+      <span>📸</span>
+    </div>
+    <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    <p>© 2024 MELOAPP</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    AOS.init();
+    new Typed("#typed", {
+      strings: [
+        '<span class="pastel1">limpiar tu casa</span>',
+        '<span class="pastel2">lavar tus platos</span>',
+        '<span class="pastel3">barrer tu casa</span>',
+        '<span class="pastel4">treapear tu casa</span>',
+        '<span class="pastel5">ordenar toda tu casa</span>',
+        '<span class="pastel6">lavar tu ropa</span>',
+        '<span class="pastel7">doblar tu ropa</span>'
+      ],
+      typeSpeed: 40,
+      backSpeed: 30,
+      backDelay: 2000,
+      loop: true,
+      showCursor: true,
+      cursorChar: "|",
+      contentType: 'html'
+    });
+
+    const icons = document.querySelectorAll('.decorations .icon');
+    const hero = document.querySelector('.hero');
+    const startRotation = 0;
+    const midRotation = 180;
+    const endRotation = 360;
+
+    function rotateIcons() {
+      const scrollY = window.scrollY;
+      const heroHeight = hero.offsetHeight;
+      let progress = Math.min(scrollY / heroHeight, 1);
+      let rotation;
+      if (progress < 0.5) {
+        rotation = startRotation + (midRotation - startRotation) * (progress * 2);
+      } else {
+        rotation = midRotation + (endRotation - midRotation) * ((progress - 0.5) * 2);
+      }
+      icons.forEach(icon => icon.style.setProperty('--rotation', `${rotation}deg`));
+    }
+
+    window.addEventListener('scroll', rotateIcons);
+    const packageCards = document.querySelectorAll('.package-card');
+    const toppingInputs = document.querySelectorAll('.topping-option input');
+    const totalPriceEl = document.getElementById('total-price');
+    const scheduleBtn = document.getElementById('schedule-btn');
+    const messageEl = document.getElementById('message');
+
+    let basePrice = 0;
+
+    packageCards.forEach(card => {
+      const input = card.querySelector('input');
+      input.addEventListener('change', () => {
+        packageCards.forEach(c => c.classList.remove('selected'));
+        if (input.checked) {
+          card.classList.add('selected');
+          basePrice = parseFloat(card.dataset.price);
+        }
+        updateTotal();
+      });
+    });
+
+    toppingInputs.forEach(input => {
+      input.addEventListener('change', updateTotal);
+    });
+
+    function updateTotal() {
+      let toppingTotal = 0;
+      toppingInputs.forEach(input => {
+        if (input.checked) {
+          toppingTotal += parseFloat(input.parentElement.dataset.price);
+        }
+      });
+      const total = basePrice + toppingTotal;
+      totalPriceEl.textContent = `$${total}`;
+    }
+
+    scheduleBtn.addEventListener('click', () => {
+      if (basePrice === 0) {
+        alert('Please select a package.');
+        return;
+      }
+      messageEl.classList.remove('hidden');
+      setTimeout(() => messageEl.classList.add('hidden'), 3000);
+    });
+  });
+  </script>
 </body>
 </html>
