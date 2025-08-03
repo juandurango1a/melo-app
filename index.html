@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MELOAPP</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <main class="container">
+        <h1>MELOAPP</h1>
+        <section class="packages">
+            <h2>Selecciona tu paquete</h2>
+            <div class="package-list">
+                <!-- Packages will be injected here by JS or we can define them in HTML with labels and inputs-->
+                <label class="package-card" data-price="25">
+                    <input type="radio" name="package" value="SMART" />
+                    <span class="emoji">🟠</span>
+                    <span class="name">Paquete SMART</span>
+                    <span class="price">$25</span>
+                </label>
+                <label class="package-card" data-price="35">
+                    <input type="radio" name="package" value="FRESCOS" />
+                    <span class="emoji">🟢</span>
+                    <span class="name">Esenciales Frescos</span>
+                    <span class="price">$35</span>
+                </label>
+                <label class="package-card" data-price="45">
+                    <input type="radio" name="package" value="RENACERES" />
+                    <span class="emoji">🟡</span>
+                    <span class="name">Renaceres MELO</span>
+                    <span class="price">$45</span>
+                </label>
+                <label class="package-card" data-price="40">
+                    <input type="radio" name="package" value="MIMOS" />
+                    <span class="emoji">🔵</span>
+                    <span class="name">Mimos con Patas</span>
+                    <span class="price">$40</span>
+                </label>
+                <label class="package-card" data-price="30">
+                    <input type="radio" name="package" value="CARINITOS" />
+                    <span class="emoji">🟣</span>
+                    <span class="name">Cariñitos Extra</span>
+                    <span class="price">$30</span>
+                </label>
+            </div>
+        </section>
+
+        <section class="toppings">
+            <h2>Agrega toppings</h2>
+            <label class="topping-option" data-price="5">
+                <input type="checkbox" name="topping" value="Aromas" />
+                Aromas Naturales (+$5)
+            </label>
+            <label class="topping-option" data-price="10">
+                <input type="checkbox" name="topping" value="Desinfeccion" />
+                Desinfección Profunda (+$10)
+            </label>
+            <label class="topping-option" data-price="8">
+                <input type="checkbox" name="topping" value="Mascotas" />
+                Cuidado de Mascotas (+$8)
+            </label>
+        </section>
+
+        <div class="total">
+            Total: <span id="total-price">$0</span>
+        </div>
+
+        <button id="schedule-btn">Agendar mi limpieza</button>
+        <div id="message" class="hidden">¡Gracias por confiar en MELOAPP!</div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
